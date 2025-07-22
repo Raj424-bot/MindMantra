@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MindMantra Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #cce5ff, #e6f2ff);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      background-color: #1e3a8a;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo-title {
+      display: flex;
+      align-items: center;
+    }
+    .logo {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+    .title {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    .profile {
+      font-size: 0.9em;
+      cursor: pointer;
+    }
+    .greetings {
+      text-align: center;
+      margin: 20px;
+    }
+    .greetings h1 {
+      font-size: 2em;
+      color: #1e3a8a;
+      font-weight: bold;
+    }
+    .greetings p {
+      font-size: 1em;
+      color: #333;
+      max-width: 600px;
+      margin: 10px auto 0;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 15px;
+      width: 100%;
+      max-width: 700px;
+    }
+    .tab {
+      background: white;
+      padding: 15px;
+      text-align: center;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      font-weight: 600;
+      color: #1e3a8a;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+    .tab:hover {
+      background: #dbeafe;
+      transform: translateY(-4px);
+    }
+    footer {
+      background-color: #ffffff;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+    }
+    footer button {
+      background: none;
+      border: none;
+      font-weight: bold;
+      color: #1e3a8a;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-title">
+      <img src="logo.png" alt="Logo" class="logo">
+      <div class="title">MindMantra</div>
+    </div>
+    <div class="profile">Profile</div>
+  </header>
+  <div class="greetings">
+    <h1>Welcome to <span style="color:#2563eb;">MindMantra</span></h1>
+    <p>Your space to learn, grow, and connect.<br/>
+    Discover guidance, ask freely, promote with confidence, and find the support you need.</p>
+  </div>
+  <main>
+    <div class="tabs">
+      <a href="courses.html" class="tab">Course</a>
+      <a href="counselling.html" class="tab">Counselling</a>
+      <a href="promote.html" class="tab">Promote</a>
+      <a href="your-guide.html" class="tab">Your Guide</a>
+      <a href="ask-help.html" class="tab">Ask for Help</a>
+      <a href="learn-share.html" class="tab">Learn/Share</a>
+      <a href="mind-games.html" class="tab">Play Mind Games</a>
+    </div>
+  </main>
+  <footer>
+    <button>Home</button>
+    <button>Notifications</button>
+    <button>Logout</button>
+  </footer>
+</body>
+</html>
