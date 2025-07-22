@@ -1,12 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ask Help</title>
-    <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8">
+  <title>Ask Your Question - MindMantra</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #f8f8ff, #e0eafc);
+      padding: 30px;
+      color: #333;
+      position: relative;
+    }
+
+    .top-right-home {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #2575fc;
+      color: white;
+      padding: 6px 12px;
+      font-size: 13px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    .top-right-home:hover {
+      background: #1a53d8;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 80px auto 20px;
+      background: #fff;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    textarea {
+      resize: vertical;
+      height: 100px;
+    }
+
+    .answer-options,
+    .privacy-options {
+      margin-top: 10px;
+    }
+
+    .answer-options label,
+    .privacy-options label {
+      font-weight: 400;
+      display: inline-block;
+      margin-right: 20px;
+    }
+
+    .pay-btn,
+    .submit-btn {
+      background: #2575fc;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+      margin-top: 15px;
+      text-align: center;
+      display: inline-block;
+      font-size: 16px;
+      transition: background 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .pay-btn:hover,
+    .submit-btn:hover {
+      background: #1a53d8;
+    }
+
+    .submit-btn {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .submit-btn.enabled {
+      opacity: 1;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <div style="text-align:center; padding: 50px;"><h1>Welcome to Ask for Help Page</h1><br><br><a href="index.html">Back to Home</a></div>
+
+  <!-- Top Right Back to Home Button -->
+  <a href="index.html" class="top-right-home">Back to Home</a>
+
+  <div class="container">
+    <h2>Ask Your Question</h2>
+    <form action="submit_question.php" method="post" onsubmit="return validatePayment();">
+      
+      <label for="name">Your Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+      <label for="question">Your Question</label>
+      <textarea id="question" name="question" placeholder="Type your question here..." required></textarea>
+
+      <label>Preferred Answer Format</label>
+      <div class="answer-options">
+        <label><input type="radio" name="answer_format" value="text" checked> Text</label>
+        <label><input type="radio" name="answer_format" value="audio"> Audio</label>
+        <label><input type="radio" name="answer_format" value="video"> Video</label>
+      </div>
+
+      <label>Answer Privacy</label>
+      <div class="privacy-options">
+        <label><input type="radio" name="privacy" value="private" checked> Only to Me</label>
+        <label><input type="radio" name="privacy" value="public"> Public</label>
+      </div>
+
+      <!-- Pay button links to payment.html -->
+      <a href="payment.html" class="pay-btn" onclick="markPayment()">Pay ₹9 to Submit</a>
+
+      <!-- Submit button is disabled until payment -->
+      <button type="submit" class="submit-btn" id="submitBtn" disabled>Submit Question</button>
+    </form>
+  </div>
+
+  <script>
+    function markPayment() {
+      // Set flag after clicking payment (simulate payment success)
+      localStorage.setItem("paid", "true");
+    }
+
+    window.onload = function() {
+      if (localStorage.getItem("paid") === "true") {
+        const submitBtn = document.getElementById("submitBtn");
+        submitBtn.disabled = false;
+        submitBtn.classList.add("enabled");
+      }
+    }
+
+    function validatePayment() {
+      if (localStorage.getItem("paid") !== "true") {
+        alert("Please complete the ₹9 payment first.");
+        return false;
+      }
+      return true;
+    }
+  </script>
+
 </body>
 </html>
