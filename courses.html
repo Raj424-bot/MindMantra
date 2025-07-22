@@ -1,42 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Our Courses</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>MindMantra Courses</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons via CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-something" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #fdfcfb, #e2d1c3);
+      color: #333;
+      padding: 20px;
+    }
+
+    .navbar {
+      background: linear-gradient(to right, #2575fc, #6a11cb);
+      color: #fff;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 12px;
+      margin-bottom: 40px;
+    }
+
+    .navbar .logo {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .navbar ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .navbar ul li a:hover {
+      color: #ffdd57;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 36px;
+      color: #4b4b4b;
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .course-card {
+      background: #fff;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .course-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .course-card h3 {
+      color: #2575fc;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+    }
+
+    .course-card p {
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .price {
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 12px;
+    }
+
+    .buy-btn {
+      display: inline-block;
+      padding: 10px 18px;
+      background: #2575fc;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.3s;
+      font-weight: 500;
+    }
+
+    .buy-btn:hover {
+      background: #1a4ed8;
+    }
+
+    @media(max-width: 500px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .navbar ul {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="logo">MyApp</div>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="index.html">Back</a></li>
-            <li><a href="index.html">Logout</a></li>
-        </ul>
-    </nav>
 
-    <h1 class="course-heading">Our Courses</h1>
+  <nav class="navbar">
+    <div class="logo">MindMantra</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html">Back</a></li>
+      <li><a href="index.html">Logout</a></li>
+    </ul>
+  </nav>
 
-    <section class="course-container">
-        <div class="course-card">
-            <h3>Spoken English Mastery</h3>
-            <p>Boost your communication skills with practical lessons.</p>
-            <p class="price">Price: ₹99</p>
-            <a href="payment.html" class="buy-btn">Buy Now</a>
-        </div>
-        <div class="course-card">
-            <h3>Public Speaking Confidence</h3>
-            <p>Learn how to speak confidently on stage and in meetings.</p>
-            <p class="price">Price: ₹99</p>
-            <a href="payment.html" class="buy-btn">Buy Now</a>
-        </div>
-        <div class="course-card">
-            <h3>IT & Cybersecurity Basics</h3>
-            <p>Get essential knowledge of IT and cybersecurity principles.</p>
-            <p class="price">Price: ₹99</p>
-            <a href="payment.html" class="buy-btn">Buy Now</a>
-        </div>
-    </section>
+  <h1>Explore Our Courses</h1>
+
+  <section class="courses-grid">
+    <div class="course-card">
+      <h3><i class="fas fa-language"></i> Spoken English Mastery</h3>
+      <p>Boost your communication skills with daily practice and real-life conversations.</p>
+      <p class="price">Price: ₹99</p>
+      <a href="payment.html?course=Spoken%20English%20Mastery" class="buy-btn">Buy Now</a>
+    </div>
+
+    <div class="course-card">
+      <h3><i class="fas fa-microphone"></i> Public Speaking Confidence</h3>
+      <p>Learn to speak clearly and confidently in public, meetings, and interviews.</p>
+      <p class="price">Price: ₹99</p>
+      <a href="payment.html?course=Public%20Speaking%20Confidence" class="buy-btn">Buy Now</a>
+    </div>
+
+    <div class="course-card">
+      <h3><i class="fas fa-shield-alt"></i> Cybersecurity Essentials</h3>
+      <p>Understand the fundamentals of cybersecurity to stay safe online.</p>
+      <p class="price">Price: ₹99</p>
+      <a href="payment.html?course=Cybersecurity%20Essentials" class="buy-btn">Buy Now</a>
+    </div>
+
+    <div class="course-card">
+      <h3><i class="fas fa-spa"></i> Mindfulness & Stress Relief</h3>
+      <p>Learn meditation, breathing, and focus techniques for mental wellness.</p>
+      <p class="price">Price: ₹99</p>
+      <a href="payment.html?course=Mindfulness%20and%20Stress%20Relief" class="buy-btn">Buy Now</a>
+    </div>
+
+    <div class="course-card">
+      <h3><i class="fas fa-desktop"></i> Basic Computer Skills</h3>
+      <p>Master the basics of using a computer, the internet, and MS Office tools.</p>
+      <p class="price">Price: ₹99</p>
+      <a href="payment.html?course=Basic%20Computer%20Skills" class="buy-btn">Buy Now</a>
+    </div>
+  </section>
+
 </body>
 </html>
