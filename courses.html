@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <title>MindMantra Courses</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <!-- Font Awesome Icons via CDN -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-something" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-6fXU0GcFgT1UjEcz4ZYzcmtoXpoT64zDYM5AnvfNSfa+emzuXchZ4bdvR6HYDkZaXMb6nRfEwpg5li5xH/Aflw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <style>
     * {
@@ -71,7 +73,7 @@
 
     .course-card {
       background: #fff;
-      padding: 25px;
+      padding: 20px;
       border-radius: 16px;
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
       transition: transform 0.3s, box-shadow 0.3s;
@@ -80,6 +82,14 @@
     .course-card:hover {
       transform: translateY(-6px);
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .course-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 15px;
     }
 
     .course-card h3 {
@@ -98,7 +108,7 @@
 
     .price {
       font-weight: 600;
-      color: #444;
+      color: #28a745;
       margin-bottom: 12px;
     }
 
@@ -146,6 +156,15 @@
 
   <section class="courses-grid">
     <div class="course-card">
+      <img src="images/mindset.jpg" alt="Mindset Course">
+      <h3><i class="fas fa-brain"></i> Change your Mindset & Life in 30 Days</h3>
+      <p>Transform your thinking habits with daily exercises for personal growth and success.</p>
+      <p class="price">Price: ₹99</p>
+      <a href="payment.html?course=Change%20your%20Mindset%20and%20Life%20in%2030%20Days" class="buy-btn">Buy Now</a>
+    </div>
+
+    <div class="course-card">
+      <img src="images/spoken-english.jpg" alt="Spoken English">
       <h3><i class="fas fa-language"></i> Spoken English Mastery</h3>
       <p>Boost your communication skills with daily practice and real-life conversations.</p>
       <p class="price">Price: ₹99</p>
@@ -153,20 +172,39 @@
     </div>
 
     <div class="course-card">
-      <h3><i class="fas fa-microphone"></i> Public Speaking Confidence</h3>
-      <p>Learn to speak clearly and confidently in public, meetings, and interviews.</p>
+      <img src="images/public-speaking.jpg" alt="Public Speaking">
+      <h3><i class="fas fa-microphone"></i> Public Speaking</h3>
+      <p>Learn to speak confidently in public, meetings, and interviews.</p>
       <p class="price">Price: ₹99</p>
-      <a href="payment.html?course=Public%20Speaking%20Confidence" class="buy-btn">Buy Now</a>
+      <a href="payment.html?course=Public%20Speaking" class="buy-btn">Buy Now</a>
     </div>
 
     <div class="course-card">
-      <h3><i class="fas fa-shield-alt"></i> Cybersecurity Essentials</h3>
-      <p>Understand the fundamentals of cybersecurity to stay safe online.</p>
+      <img src="images/basic-computer.jpg" alt="Basic IT">
+      <h3><i class="fas fa-desktop"></i> Basic IT Computer</h3>
+      <p>Learn computer basics, internet usage, and MS Office tools.</p>
       <p class="price">Price: ₹99</p>
-      <a href="payment.html?course=Cybersecurity%20Essentials" class="buy-btn">Buy Now</a>
+      <a href="payment.html?course=Basic%20IT%20Computer" class="buy-btn">Buy Now</a>
     </div>
 
     <div class="course-card">
+      <img src="images/advance-cyber.jpg" alt="Cyber Security">
+      <h3><i class="fas fa-shield-alt"></i> Advance IT & Cyber Security</h3>
+      <p>Learn advanced computer operations and protect your digital identity.</p>
+      <p class="price">Price: ₹99</p>
+      <a href="payment.html?course=Advance%20IT%20and%20Cyber%20Security" class="buy-btn">Buy Now</a>
+    </div>
+
+    <div class="course-card">
+      <img src="images/networking.jpg" alt="Networking">
+      <h3><i class="fas fa-network-wired"></i> Computer Networking & Surveillance</h3>
+      <p>Master computer networking fundamentals and surveillance system setup.</p>
+      <p class="price">Price: ₹99</p>
+      <a href="payment.html?course=Computer%20Networking%20and%20Surveillance" class="buy-btn">Buy Now</a>
+    </div>
+
+    <div class="course-card">
+      <img src="images/mindfulness.jpg" alt="Mindfulness">
       <h3><i class="fas fa-spa"></i> Mindfulness & Stress Relief</h3>
       <p>Learn meditation, breathing, and focus techniques for mental wellness.</p>
       <p class="price">Price: ₹99</p>
@@ -174,10 +212,11 @@
     </div>
 
     <div class="course-card">
-      <h3><i class="fas fa-desktop"></i> Basic Computer Skills</h3>
-      <p>Master the basics of using a computer, the internet, and MS Office tools.</p>
+      <img src="images/chatgpt-ai.jpg" alt="ChatGPT and AI">
+      <h3><i class="fas fa-robot"></i> Basics of ChatGPT & AI</h3>
+      <p>Explore AI tools like ChatGPT and understand their everyday applications.</p>
       <p class="price">Price: ₹99</p>
-      <a href="payment.html?course=Basic%20Computer%20Skills" class="buy-btn">Buy Now</a>
+      <a href="payment.html?course=Basics%20of%20ChatGPT%20and%20AI" class="buy-btn">Buy Now</a>
     </div>
   </section>
 
