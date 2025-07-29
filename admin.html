@@ -1,91 +1,108 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mind Mantra Admin Panel</title>
+  <title>Mind Mantra Admin Login</title>
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f2f2f2; text-align: center; padding: 30px; }
-    #loginForm, #adminPanel { background: #fff; padding: 20px; max-width: 500px; margin: auto; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
-    input, button, textarea { margin: 10px; padding: 10px; width: 90%; max-width: 400px; }
-    .question-card { background: #e8f0fe; padding: 15px; margin: 10px auto; border-radius: 8px; text-align: left; max-width: 500px; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    .login-box {
+      background: white;
+      padding: 40px;
+      margin: auto;
+      width: 300px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    button {
+      background: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #error {
+      color: red;
+      margin-top: 10px;
+    }
   </style>
+</head>
+<body>
+
+  <div class="login-box">
+    <h2>Admin Login</h2>
+    <input type="email" id="email" placeholder="Admin Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button onclick="adminLogin()">Login</button>
+    <p id="error"></p>
+  </div>
+
   <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, collection, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";const firebaseConfig = {
-  apiKey: "AIzaSyBdHFYYdU_X_7LNuoFGWxDMD2nzLkE439I",
-  authDomain: "mindmantra-2556a.firebaseapp.com",
-  projectId: "mindmantra-2556a",
-  storageBucket: "mindmantra-2556a.appspot.com",
-  messagingSenderId: "899345272918",
-  appId: "1:899345272918:web:321428c86ee15ccda66bf7",
-  measurementId: "G-J06YXLQL1F"
-};
+    import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const db = getFirestore(app);
+    // Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBdHFYYdU_X_7LNuoFGWxDMD2nzLkE439I",
+      authDomain: "mindmantra-2556a.firebaseapp.com",
+      projectId: "mindmantra-2556a",
+      storageBucket: "mindmantra-2556a.appspot.com",
+      messagingSenderId: "899345272918",
+      appId: "1:899345272918:web:321428c86ee15ccda66bf7",
+      measurementId: "G-J06YXLQL1F"
+    };
 
-const allowedAdmins = ["mindmantra567@gmail.com"];
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-onAuthStateChanged(auth, (user) => {
-  if (user && allowedAdmins.includes(user.email)) {
-    document.getElementById("adminPanel").style.display = "block";
-    document.getElementById("loginForm").style.display = "none";
-    loadQuestions();
-  } else {
-    document.getElementById("adminPanel").style.display = "none";
-    document.getElementById("loginForm").style.display = "block";
-  }
-});
+    // Login function
+    window.adminLogin = async function () {
+      const emailInput = document.getElementById("email").value.trim();
+      const passwordInput = document.getElementById("password").value.trim();
+      const errorEl = document.getElementById("error");
 
-window.login = function () {
-  const email = document.getElementById("adminEmail").value;
-  const password = document.getElementById("adminPassword").value;
-  signInWithEmailAndPassword(auth, email, password).catch(error => alert(error.message));
-};
+      try {
+        const adminRef = collection(db, "admins");
+        const querySnapshot = await getDocs(adminRef);
 
-window.logout = function () {
-  signOut(auth).then(() => alert("Logged out"));
-};
+        let found = false;
 
-async function loadQuestions() {
-  const questionsRef = collection(db, "questions");
-  const snapshot = await getDocs(questionsRef);
-  const questionList = document.getElementById("questionList");
-  questionList.innerHTML = "";
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    questionList.innerHTML += `
-      <div class="question-card">
-        <strong>${data.name || "Anonymous"}</strong><br>
-        <p>${data.question}</p>
-        <textarea placeholder="Reply here (text only for now)" id="reply-${doc.id}"></textarea>
-        <button onclick="replyToQuestion('${doc.id}')">Send Reply</button>
-      </div>`;
-  });
-}
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          if (data.email === emailInput && data.password === passwordInput) {
+            found = true;
+          }
+        });
 
-window.replyToQuestion = async function (id) {
-  const replyText = document.getElementById("reply-" + id).value;
-  if (!replyText.trim()) return alert("Reply cannot be empty.");
-  await setDoc(doc(db, "replies", id), { reply: replyText, repliedAt: new Date() });
-  alert("Reply saved.");
-};
-
+        if (found) {
+          // Redirect to actual admin panel
+          window.location.href = "admin-dashboard.html";
+        } else {
+          errorEl.textContent = "Invalid credentials. Please try again.";
+        }
+      } catch (err) {
+        errorEl.textContent = "Error logging in. Try again later.";
+        console.error(err);
+      }
+    };
   </script>
-</head>
-<body>
-  <div id="loginForm">
-    <h2>Mind Mantra Admin Login</h2>
-    <input type="email" id="adminEmail" placeholder="Admin Email">
-    <input type="password" id="adminPassword" placeholder="Password">
-    <button onclick="login()">Login</button>
-  </div>  <div id="adminPanel" style="display:none">
-    <h2>Welcome to Mind Mantra Admin Panel</h2>
-    <button onclick="logout()">Logout</button>
-    <div id="questionList">Loading questions...</div>
-  </div>
+
 </body>
 </html>
