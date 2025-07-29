@@ -1,121 +1,91 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mind Mantra Admin Panel</title>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f5f9ff;
-    }
-    header {
-      background-color: #005dd1;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    #logout {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background-color: #ff4b5c;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    main {
-      padding: 20px;
-    }
-    .question {
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .reply-section {
-      margin-top: 10px;
-    }
-    textarea, input[type="file"] {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      margin-bottom: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    button.reply-btn {
-      background-color: #0077ff;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
+    body { font-family: Arial, sans-serif; background-color: #f2f2f2; text-align: center; padding: 30px; }
+    #loginForm, #adminPanel { background: #fff; padding: 20px; max-width: 500px; margin: auto; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+    input, button, textarea { margin: 10px; padding: 10px; width: 90%; max-width: 400px; }
+    .question-card { background: #e8f0fe; padding: 15px; margin: 10px auto; border-radius: 8px; text-align: left; max-width: 500px; }
   </style>
-</head>
-<body>
-  <header>
-    <h1>Mind Mantra Admin Panel</h1>
-    <button id="logout">Logout</button>
-  </header>
-  <main id="questionContainer">
-    <p>Loading questions...</p>
-  </main>  <script type="module">
+  <!-- Firebase SDK -->
+  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, collection, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";const firebaseConfig = {
+  apiKey: "AIzaSyBdHFYYdU_X_7LNuoFGWxDMD2nzLkE439I",
+  authDomain: "mindmantra-2556a.firebaseapp.com",
+  projectId: "mindmantra-2556a",
+  storageBucket: "mindmantra-2556a.appspot.com",
+  messagingSenderId: "899345272918",
+  appId: "1:899345272918:web:321428c86ee15ccda66bf7",
+  measurementId: "G-J06YXLQL1F"
+};
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBdHFYYdU_X_7LNuoFGWxDMD2nzLkE439I",
-      authDomain: "mindmantra-2556a.firebaseapp.com",
-      projectId: "mindmantra-2556a",
-      storageBucket: "mindmantra-2556a.firebasestorage.app",
-      messagingSenderId: "899345272918",
-      appId: "1:899345272918:web:321428c86ee15ccda66bf7",
-      measurementId: "G-J06YXLQL1F"
-    };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore(app);
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+const allowedAdmins = ["mindmantra567@gmail.com"];
 
-    const container = document.getElementById("questionContainer");
-
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.href = "admin-login.html";
-      } else {
-        const querySnapshot = await getDocs(collection(db, "questions"));
-        container.innerHTML = "";
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          const questionBox = document.createElement("div");
-          questionBox.className = "question";
-          questionBox.innerHTML = `
-            <p><strong>Name:</strong> ${data.name}</p>
-            <p><strong>Class:</strong> ${data.class}</p>
-            <p><strong>Question:</strong> ${data.question}</p>
-            <div class="reply-section">
-              <textarea placeholder="Type your text reply here..."></textarea><label>Upload Audio Reply: <input type="file" accept="audio/*"></label>
-          <label>Upload Video Reply: <input type="file" accept="video/*"></label>
-          <button class="reply-btn">Send Reply</button>
-        </div>
-      `;
-      container.appendChild(questionBox);
-    });
+onAuthStateChanged(auth, (user) => {
+  if (user && allowedAdmins.includes(user.email)) {
+    document.getElementById("adminPanel").style.display = "block";
+    document.getElementById("loginForm").style.display = "none";
+    loadQuestions();
+  } else {
+    document.getElementById("adminPanel").style.display = "none";
+    document.getElementById("loginForm").style.display = "block";
   }
 });
 
-document.getElementById("logout").addEventListener("click", () => {
-  signOut(auth).then(() => {
-    window.location.href = "admin-login.html";
+window.login = function () {
+  const email = document.getElementById("adminEmail").value;
+  const password = document.getElementById("adminPassword").value;
+  signInWithEmailAndPassword(auth, email, password).catch(error => alert(error.message));
+};
+
+window.logout = function () {
+  signOut(auth).then(() => alert("Logged out"));
+};
+
+async function loadQuestions() {
+  const questionsRef = collection(db, "questions");
+  const snapshot = await getDocs(questionsRef);
+  const questionList = document.getElementById("questionList");
+  questionList.innerHTML = "";
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    questionList.innerHTML += `
+      <div class="question-card">
+        <strong>${data.name || "Anonymous"}</strong><br>
+        <p>${data.question}</p>
+        <textarea placeholder="Reply here (text only for now)" id="reply-${doc.id}"></textarea>
+        <button onclick="replyToQuestion('${doc.id}')">Send Reply</button>
+      </div>`;
   });
-});
+}
+
+window.replyToQuestion = async function (id) {
+  const replyText = document.getElementById("reply-" + id).value;
+  if (!replyText.trim()) return alert("Reply cannot be empty.");
+  await setDoc(doc(db, "replies", id), { reply: replyText, repliedAt: new Date() });
+  alert("Reply saved.");
+};
 
   </script>
+</head>
+<body>
+  <div id="loginForm">
+    <h2>Mind Mantra Admin Login</h2>
+    <input type="email" id="adminEmail" placeholder="Admin Email">
+    <input type="password" id="adminPassword" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>  <div id="adminPanel" style="display:none">
+    <h2>Welcome to Mind Mantra Admin Panel</h2>
+    <button onclick="logout()">Logout</button>
+    <div id="questionList">Loading questions...</div>
+  </div>
 </body>
 </html>
