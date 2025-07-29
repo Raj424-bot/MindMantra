@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MindMantra Admin Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f7f7f7;
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .question-box {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    textarea {
+      width: 100%;
+      min-height: 60px;
+      margin-top: 8px;
+      padding: 8px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 8px;
+      padding: 6px 12px;
+      background-color: #3f51b5;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2c3e90;
+    }
+  </style>
+</head>
+<body>
+  <h2>🧠 MindMantra Admin Panel</h2>
+  <div id="questionList">Loading questions...</div>
+
+  <script type="module">
+    // Firebase SDKs
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // ✅ Replace with your Firebase config
+    const firebaseConfig = {
+       apiKey: "AIzaSyBdHFYYdU_X_7LNuoFGWxDMD2nzLkE439I",
+       authDomain: "mindmantra-2556a.firebaseapp.com",
+       projectId: "mindmantra-2556a",
+       storageBucket: "mindmantra-2556a.firebasestorage.app",
+       messagingSenderId: "899345272918",
+       appId: "1:899345272918:web:321428c86ee15ccda66bf7",
+       measurementId: "G-J06YXLQL1F"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Load questions
+    async function fetchQuestions() {
+      const querySnapshot = await getDocs(collection(db, "questions"));
+      const list = document.getElementById("questionList");
+      list.innerHTML = "";
+
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        const div = document.createElement("div");
+        div.className = "question-box";
+        div.innerHTML = `
+          <p><strong>Question:</strong> ${data.question}</p>
+          <p><strong>Name:</strong> ${data.name || 'Anonymous'} | <strong>Email:</strong> ${data.email || 'N/A'}</p>
+          <p><strong>Reply:</strong> ${data.reply || '<em>No reply yet</em>'}</p>
+          <textarea id="reply-${docSnap.id}" placeholder="Write your reply here...">${data.reply || ""}</textarea>
+          <button onclick="sendReply('${docSnap.id}')">Send Reply</button>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    // Send reply to Firestore
+    window.sendReply = async function (docId) {
+      const replyText = document.getElementById(reply-${docId}).value.trim();
+      if (replyText === "") return alert("Please enter a reply before submitting.");
+      const docRef = doc(db, "questions", docId);
+      await updateDoc(docRef, { reply: replyText });
+      alert("✅ Reply saved successfully!");
+      fetchQuestions(); // Refresh the list
+    };
+
+    // Load on start
+    fetchQuestions();
+  </script>
+</body>
+</html>
