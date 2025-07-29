@@ -47,7 +47,7 @@
   <h2>🧠 MindMantra Admin Panel</h2>
   <div id="questionList">Loading questions...</div>
 
- <script type="module">
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import {
     getFirestore,
@@ -65,7 +65,8 @@
     measurementId: "G-J06YXLQL1F"
   };
 
-  console.log("Initializing Firebase...");
+  console.log("✅ Firebase config loaded");
+
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
@@ -74,7 +75,8 @@
 
   async function fetchQuestions() {
     try {
-      console.log("Fetching questions from Firestore...");
+      console.log("📡 Fetching questions from Firestore...");
+
       const querySnapshot = await getDocs(collection(db, "questions"));
 
       if (querySnapshot.empty) {
@@ -85,9 +87,8 @@
       loadingText.style.display = "none";
 
       querySnapshot.forEach((doc) => {
-        console.log("Document:", doc.data());
-
         const data = doc.data();
+
         const questionItem = document.createElement("div");
         questionItem.classList.add("question-item");
 
@@ -97,11 +98,14 @@
           <p><strong>Question:</strong> ${data.question}</p>
           <p><strong>Reply:</strong> ${data.reply || "Not replied yet"}</p>
         `;
+
         questionList.appendChild(questionItem);
       });
 
+      console.log("✅ Questions loaded successfully");
+
     } catch (error) {
-      console.error("Error fetching questions:", error);
+      console.error("❌ Error fetching questions:", error);
       loadingText.innerText = "Error loading questions. Check console.";
     }
   }
