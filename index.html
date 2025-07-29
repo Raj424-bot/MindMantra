@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MindMantra Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   <style>
@@ -18,7 +18,11 @@
     header {
       background-color: #1e3a8a;
       color: white;
-      padding: 15px 20px;
+      padding: 15px 20px 5px;
+      display: flex;
+      flex-direction: column;
+    }
+    .logo-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -36,9 +40,27 @@
       font-size: 1.5em;
       font-weight: bold;
     }
-    .profile {
+    .profile-box {
+      text-align: center;
+    }
+    .profile-pic {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+    }
+    .profile-name {
+      font-size: 0.8em;
+      margin-top: 5px;
+      color: #ffffff;
+    }
+    .marquee-box {
+      background-color: #2563eb;
+      color: white;
+      padding: 5px;
       font-size: 0.9em;
-      cursor: pointer;
+      font-weight: 500;
     }
     .greetings {
       text-align: center;
@@ -79,57 +101,76 @@
       color: #1e3a8a;
       cursor: pointer;
       transition: all 0.2s ease-in-out;
+      text-decoration: none;
     }
     .tab:hover {
       background: #dbeafe;
       transform: translateY(-4px);
     }
     footer {
-      background-color: #ffffff;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 10px 0;
-      box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+      background-color: #1e3a8a;
+      color: white;
+      padding: 8px 0;
+      font-size: 0.85em;
     }
-    footer button {
-      background: none;
-      border: none;
-      font-weight: bold;
-      color: #1e3a8a;
-      cursor: pointer;
-      font-size: 0.9em;
+    .footer-marquee {
+      white-space: nowrap;
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo-title">
-      <img src="logo1.png" alt="Logo" class="logo">
-      <div class="title">MindMantra</div>
+    <div class="logo-bar">
+      <div class="logo-title">
+        <img src="logo1.png" alt="Logo" class="logo">
+        <div class="title"></div>
+      </div>
+      <div class="profile-box">
+        <img src="rajesh.jpg" alt="Mr Rajesh" class="profile-pic" />
+        <div class="profile-name">Mr Rajesh : Founder</div>
+      </div>
     </div>
-    <div class="profile">Profile</div>
+    <div class="marquee-box">
+      <marquee behavior="scroll" direction="left" scrollamount="4">
+        “Think Big. Start Now. No Regrets.” — Mr. Rajesh  &nbsp;&nbsp;&nbsp;&nbsp; 
+        “Your pain today will become your power tomorrow.” - Mr. Rajesh &nbsp;&nbsp;&nbsp;&nbsp; 
+        “Discipline today, freedom tomorrow.” - Mr. Rajesh &nbsp;&nbsp;&nbsp;&nbsp; 
+        “You don’t need approval to chase your dreams.” - Mr. Rajesh &nbsp;&nbsp;&nbsp;&nbsp; 
+        “हर एक दिन एक नई उम्मीद लेकर आता है।” - Mr. Rajesh &nbsp;&nbsp;&nbsp;&nbsp;
+        “Don’t let doubts decide your destiny.” - Mr. Rajesh
+      </marquee>
+    </div>
   </header>
+
   <div class="greetings">
     <h1>Welcome to <span style="color:#2563eb;">MindMantra</span></h1>
-    <p>Your space to learn, grow, and connect.<br/>
-    Discover guidance, ask freely, promote with confidence, and find the support you need.</p>
+    <p>Where Learning Meets Purpose, and Dreams Find Direction.<br/>
+    Ask freely, Grow Confidently, and Walk Your Path with Guidance and Support.</p>
   </div>
+
   <main>
     <div class="tabs">
-      <a href="courses.html" class="tab">Courses</a>
+      
+      <a href="Ask Question.html" class="tab">Ask your Ques</a>
       <a href="counselling.html" class="tab">Counselling</a>
       <a href="Ask Ques.html" class="tab">Ask your Ques</a>
+      <a href="courses.html" class="tab">Courses</a>
       <a href="your-guide.html" class="tab">Your Guide</a>
       <a href="ask-help.html" class="tab">Ask for Help</a>
       <a href="learn-share.html" class="tab">Learn/Share</a>
       <a href="mind-games.html" class="tab">Play Mind Games</a>
     </div>
   </main>
+
   <footer>
-    <button>Home</button>
-    <button>Notifications</button>
-    <button>Logout</button>
+    <div class="footer-marquee">
+      <marquee behavior="scroll" direction="left" scrollamount="3">
+        📞 Phone: 8445187795 &nbsp;&nbsp;&nbsp;&nbsp; 
+        📧 Email: MindMantra567@gmail.com &nbsp;&nbsp;&nbsp;&nbsp; 
+        📷 Instagram: @mindmantra.mission &nbsp;&nbsp;&nbsp;&nbsp; 
+        ▶️ YouTube: Mind Mantra
+      </marquee>
+    </div>
   </footer>
 </body>
 </html>
