@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Helping Hand - Mind Mantra</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #f4f6f8;
+    }
+
+    header {
+      background: #3f51b5;
+      color: white;
+      text-align: center;
+      padding: 25px 10px;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .marquee {
+      background: #ffeb3b;
+      color: #333;
+      padding: 8px;
+      font-weight: 500;
+      font-size: 16px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .marquee span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 15s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .carousel {
+      display: flex;
+      overflow: hidden;
+      width: 100%;
+      max-height: 300px;
+      position: relative;
+    }
+
+    .carousel img {
+      width: 100%;
+      object-fit: cover;
+      animation: slide 20s infinite;
+    }
+
+    @keyframes slide {
+      0%, 25% { transform: translateX(0); }
+      30%, 55% { transform: translateX(-100%); }
+      60%, 85% { transform: translateX(-200%); }
+      90%, 100% { transform: translateX(0); }
+    }
+
+    .donation-section {
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .donation-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: 0.3s;
+    }
+
+    .donation-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .donation-card h3 {
+      color: #3f51b5;
+      margin-bottom: 10px;
+    }
+
+    .donation-card p {
+      margin-bottom: 20px;
+      font-size: 15px;
+    }
+
+    .donation-card button {
+      background: #3f51b5;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .donation-card button:hover {
+      background: #303f9f;
+    }
+
+    footer {
+      background: #3f51b5;
+      color: white;
+      text-align: center;
+      padding: 20px 10px;
+    }
+
+    footer img {
+      vertical-align: middle;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        font-size: 22px;
+      }
+
+      .donation-card {
+        padding: 15px;
+      }
+
+      .donation-card h3 {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    🤝 Helping Hand - Mind Mantra
+  </header>
+
+  <div class="marquee">
+    <span>“The smallest act of kindness is worth more than the grandest intention.” — Oscar Wilde</span>
+  </div>
+
+  <div class="carousel">
+    <img src="https://source.unsplash.com/1600x400/?education,books,children" alt="Support">
+    <img src="https://source.unsplash.com/1600x400/?help,poor,kids" alt="Donate">
+    <img src="https://source.unsplash.com/1600x400/?donation,care,volunteer" alt="Give">
+  </div>
+
+  <section class="donation-section">
+    <div class="donation-card">
+      <h3>📚 Donate Books</h3>
+      <p>Help us build mini libraries in remote schools by donating your old or new books.</p>
+      <button>Donate Now</button>
+    </div>
+
+    <div class="donation-card">
+      <h3>👕 Donate Clothes</h3>
+      <p>Give the gift of warmth and dignity by donating clean clothes for students in need.</p>
+      <button>Donate Now</button>
+    </div>
+
+    <div class="donation-card">
+      <h3>💰 Donate Money</h3>
+      <p>Support our initiatives through your financial contributions—every rupee matters.</p>
+      <button>Donate Now</button>
+    </div>
+
+    <div class="donation-card">
+      <h3>🚀 Future Projects</h3>
+      <p>Be a part of something bigger by supporting our upcoming mental health and education campaigns.</p>
+      <button>Support Mission</button>
+    </div>
+  </section>
+
+  <footer>
+    <div style="padding: 10px 20px;">
+      <p style="margin: 6px 0;"><strong>Contact:</strong> <a href="tel:8445187795">8445187795</a></p>
+      <p style="margin: 6px 0;"><strong>Email:</strong> <a href="mailto:mindmantra567@gmail.com">mindmantra567@gmail.com</a></p>
+      <p style="margin: 6px 0;"><strong>Follow Us:</strong></p>
+      <div style="margin-top: 8px;">
+        <a href="https://instagram.com/mindmantra.mission" target="_blank" style="margin-right: 15px;">
+          <img src="https://cdn-icons-png.flaticon.com/24/2111/2111463.png" alt="Instagram" />
+        </a>
+        <a href="https://youtube.com/@MindMantra" target="_blank">
+          <img src="https://cdn-icons-png.flaticon.com/24/1384/1384060.png" alt="YouTube" />
+        </a>
+      </div>
+      <p style="margin-top: 12px; font-size: 13px;">© 2025 Mind Mantra | All rights reserved</p>
+    </div>
+  </footer>
+
+</body>
+</html>
