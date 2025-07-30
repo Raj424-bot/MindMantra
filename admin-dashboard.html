@@ -3,59 +3,48 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mind Mantra Admin Dashboard</title>
+  <title>Admin Dashboard | Mind Mantra</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #e0eafc, #cfdef3);
+      background-color: #f0f4f8;
       padding: 20px;
-      color: #333;
     }
     h1 {
       text-align: center;
-      color: #333;
       margin-bottom: 30px;
     }
     .card {
-      background: #ffffff;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      background: #fff;
+      border-radius: 12px;
       padding: 20px;
-      margin: 20px auto;
-      max-width: 700px;
-      transition: all 0.3s ease;
-    }
-    .card:hover {
-      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
     .card h3 {
       margin: 0 0 10px;
       color: #0077b6;
     }
     .card p {
-      margin: 5px 0;
+      margin: 4px 0;
     }
-    textarea {
+    textarea, select, button {
       width: 100%;
-      margin-top: 10px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      resize: vertical;
-    }
-    select, button {
       margin-top: 10px;
       padding: 10px;
       border-radius: 8px;
-      width: 100%;
-      font-weight: bold;
+      font-size: 14px;
+    }
+    textarea {
+      resize: vertical;
+      border: 1px solid #ccc;
     }
     select {
       border: 1px solid #ccc;
     }
     button {
       background-color: #0077b6;
-      color: white;
+      color: #fff;
       border: none;
       cursor: pointer;
     }
@@ -88,53 +77,62 @@
     const questionList = document.getElementById("questionList");
 
     async function loadQuestions() {
-      const querySnapshot = await getDocs(collection(db, "questions"));
-      questionList.innerHTML = "";
+      try {
+        const querySnapshot = await getDocs(collection(db, "questions"));
+        questionList.innerHTML = "";
 
-      if (querySnapshot.empty) {
-        questionList.innerHTML = "<p>No questions found.</p>";
-        return;
+        if (querySnapshot.empty) {
+          questionList.innerHTML = "<p>No questions found.</p>";
+          return;
+        }
+
+        querySnapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const id = docSnap.id;
+
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <h3>${data.name || "No Name"}</h3>
+            <p><strong>Email:</strong> ${data.email || "N/A"}</p>
+            <p><strong>Question:</strong> ${data.question || "No question"}</p>
+            <p><strong>Time:</strong> ${data.timestamp ? new Date(data.timestamp).toLocaleString() : "N/A"}</p>
+            <textarea id="reply-${id}" placeholder="Write reply here..."></textarea>
+            <select id="privacy-${id}">
+              <option value="public">Reply Publicly</option>
+              <option value="individual">Reply Individually</option>
+            </select>
+            <button onclick="submitReply('${id}')">Submit Reply</button>
+          `;
+          questionList.appendChild(card);
+        });
+      } catch (err) {
+        console.error("Error loading questions:", err);
+        questionList.innerHTML = "<p style='color:red;'>Error loading questions.</p>";
       }
-
-      querySnapshot.forEach((docSnap) => {
-        const data = docSnap.data();
-        const questionId = docSnap.id;
-
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <h3>${data.name || "Anonymous"}</h3>
-          <p><strong>Email:</strong> ${data.email || "N/A"}</p>
-          <p><strong>Question:</strong> ${data.question || "No question"}</p>
-          <p><strong>Asked At:</strong> ${data.timestamp ? new Date(data.timestamp).toLocaleString() : "Unknown"}</p>
-          <textarea id="reply-${questionId}" placeholder="Write your reply here..."></textarea>
-          <select id="privacy-${questionId}">
-            <option value="public">Reply Publicly</option>
-            <option value="individual">Reply Individually</option>
-          </select>
-          <button onclick="submitReply('${questionId}')">Send Reply</button>
-        `;
-        questionList.appendChild(card);
-      });
     }
 
     window.submitReply = async (id) => {
-      const replyText = document.getElementById(reply-${id}).value.trim();
-      const privacy = document.getElementById(privacy-${id}).value;
+      const replyText = document.getElementById(`reply-${id}`).value.trim();
+      const privacy = document.getElementById(`privacy-${id}`).value;
 
       if (!replyText) {
-        alert("Please write a reply before submitting.");
+        alert("Please write a reply first.");
         return;
       }
 
       const docRef = doc(db, "questions", id);
-      await updateDoc(docRef, {
-        reply: replyText,
-        privacy: privacy,
-        replyTime: new Date().toISOString()
-      });
-
-      alert("✅ Reply submitted!");
+      try {
+        await updateDoc(docRef, {
+          reply: replyText,
+          privacy: privacy,
+          replyTime: new Date().toISOString()
+        });
+        alert("Reply submitted successfully!");
+      } catch (err) {
+        console.error("Error submitting reply:", err);
+        alert("Error submitting reply.");
+      }
     };
 
     loadQuestions();
