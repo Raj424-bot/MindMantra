@@ -1,0 +1,154 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MindMantra Feed</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f4f6f8;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .sidebar {
+      height: 100vh;
+      background-color: #343a40;
+      color: white;
+    }
+    .sidebar a {
+      color: white;
+      display: block;
+      padding: 15px;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      background-color: #495057;
+    }
+    .feed-card {
+      margin-bottom: 20px;
+    }
+    .reply-media {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+    .like-btn {
+      cursor: pointer;
+      color: #007bff;
+    }
+    .like-btn.liked {
+      color: red;
+    }
+    footer {
+      background-color: #343a40;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+    .comment-box {
+      resize: none;
+    }
+  </style>
+</head>
+<body>
+<div class="d-flex">
+  <!-- Sidebar -->
+  <div class="sidebar p-3">
+    <h4 class="text-center">Mind Mantra</h4>
+    <a href="#">Courses</a>
+    <a href="#">Counselling</a>
+    <a href="#">Promote</a>
+    <a href="#">Your Guide</a>
+    <a href="#">Community Help</a>
+    <a href="#">Mind Games</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container-fluid p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Community Feed</h2>
+      <div>
+        <select class="form-select" id="filter" style="width: 200px">
+          <option value="all">All</option>
+          <option value="answered">Answered</option>
+          <option value="unanswered">Unanswered</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="feed" class="row"></div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  Contact: 8445187795 | Email: MindMantra567@gmail.com | Instagram: @mindmantra.mission | YouTube: Mind Mantra
+</footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+  import {
+    getFirestore, collection, getDocs, query, where
+  } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBdHFYYdU_X_7LNuoFGWxDMD2nzLkE439I",
+    authDomain: "mindmantra-2556a.firebaseapp.com",
+    projectId: "mindmantra-2556a",
+    storageBucket: "mindmantra-2556a.appspot.com",
+    messagingSenderId: "899345272918",
+    appId: "1:899345272918:web:321428c86ee15ccda66bf7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function fetchQuestions(filter = 'all') {
+    const feedContainer = document.getElementById('feed');
+    feedContainer.innerHTML = '';
+    let q = collection(db, 'questions');
+
+    const snapshot = await getDocs(q);
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (
+        (filter === 'answered' && !data.answerText && !data.answerAudioURL && !data.answerVideoURL) ||
+        (filter === 'unanswered' && (data.answerText || data.answerAudioURL || data.answerVideoURL))
+      ) return;
+
+      const div = document.createElement('div');
+      div.classList.add('col-md-6');
+      div.innerHTML = `
+        <div class="card feed-card">
+          <div class="card-body">
+            <h5 class="card-title">${data.name}</h5>
+            <p class="card-text">${data.question}</p>
+            ${data.answerText ? `<p><strong>Answer:</strong> ${data.answerText}</p>` : ''}
+            ${data.answerAudioURL ? `<audio class="reply-media" controls src="${data.answerAudioURL}"></audio>` : ''}
+            ${data.answerVideoURL ? `<video class="reply-media" controls src="${data.answerVideoURL}"></video>` : ''}
+            <div class="mt-2">
+              <span class="like-btn">👍 Like</span>
+              <span class="mx-2">💬 Comment</span>
+              <span>🔗 Share</span>
+            </div>
+            <div class="mt-2">
+              <textarea class="form-control comment-box" rows="1" placeholder="Write a comment..."></textarea>
+            </div>
+          </div>
+        </div>
+      `;
+      feedContainer.appendChild(div);
+    });
+  }
+
+  document.getElementById('filter').addEventListener('change', (e) => {
+    fetchQuestions(e.target.value);
+  });
+
+  fetchQuestions();
+</script>
+</body>
+</html>
