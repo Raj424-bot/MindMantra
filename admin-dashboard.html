@@ -1,97 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Mind Mantra Admin Dashboard</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0f4f8;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background-color: #0f4c75;
-      color: white;
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 20px;
-    }
-
-    #logoutBtn {
-      background: #ff5e57;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    main {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
       padding: 20px;
     }
-
-    .question {
-      background-color: #ffffff;
-      border: 1px solid #ccc;
-      border-left: 5px solid #0f4c75;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 5px;
+    h1 {
+      text-align: center;
+      color: #1976d2;
     }
-
-    .question p {
-      margin: 5px 0;
+    .question-card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-
-    .reply-box {
+    .reply-section {
       margin-top: 10px;
     }
-
-    textarea {
+    textarea, input[type="file"] {
       width: 100%;
       padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      resize: vertical;
-    }
-
-    button.replyBtn {
-      background: #00b894;
-      color: white;
-      padding: 8px 15px;
       margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    button {
+      background: #1976d2;
+      color: white;
       border: none;
-      border-radius: 5px;
+      padding: 10px 15px;
+      border-radius: 8px;
       cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #125ea7;
+    }
+    .logout-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #e53935;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Mind Mantra Admin Panel</h1>
-    <button id="logoutBtn">Logout</button>
-  </header>
-
-  <main id="questionsContainer">
-    <p>Loading questions...</p>
-  </main>
+  <button class="logout-btn" onclick="logout()">Logout</button>
+  <h1>Mind Mantra Admin Panel</h1>
+  <div id="questionsContainer">Loading questions...</div>
 
   <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  <script>
     // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyBdHFYYdU_X_7LNuoFGWxDMD2nzLkE439I",
@@ -99,71 +67,72 @@
       projectId: "mindmantra-2556a",
       storageBucket: "mindmantra-2556a.appspot.com",
       messagingSenderId: "899345272918",
-      appId: "1:899345272918:web:321428c86ee15ccda66bf7"
+      appId: "1:899345272918:web:321428c86ee15ccda66bf7",
+      measurementId: "G-J06YXLQL1F"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-    const container = document.getElementById("questionsContainer");
+    // Check Login
+    if (localStorage.getItem("adminLoggedIn") !== "true") {
+      alert("Unauthorized access. Please login.");
+      window.location.href = "admin-login.html";
+    }
 
-    // Load questions
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        loadQuestions();
-      } else {
-        window.location.href = "admin-login.html";
-      }
-    });
+    // Logout
+    function logout() {
+      localStorage.removeItem("adminLoggedIn");
+      window.location.href = "admin-login.html";
+    }
 
-    function loadQuestions() {
-      container.innerHTML = "<p>Loading questions...</p>";
-      db.collection("questions").orderBy("timestamp", "desc").onSnapshot(snapshot => {
-        container.innerHTML = "";
-        if (snapshot.empty) {
-          container.innerHTML = "<p>No questions yet.</p>";
-        } else {
-          snapshot.forEach(doc => {
-            const data = doc.data();
-            const qDiv = document.createElement("div");
-            qDiv.classList.add("question");
-            qDiv.innerHTML = `
-              <p><strong>Name:</strong> ${data.name || "Unknown"}</p>
-              <p><strong>Email:</strong> ${data.email || "Not provided"}</p>
-              <p><strong>Question:</strong> ${data.question}</p>
-              <div class="reply-box">
-                <textarea id="reply-${doc.id}" placeholder="Write your reply here..."></textarea>
-                <button class="replyBtn" onclick="sendReply('${doc.id}')">Send Reply</button>
-              </div>
-            `;
-            container.appendChild(qDiv);
-          });
+    // Load Questions
+    async function loadQuestions() {
+      const container = document.getElementById("questionsContainer");
+      container.innerHTML = "";
+
+      try {
+        const querySnapshot = await getDocs(collection(db, "questions"));
+        if (querySnapshot.empty) {
+          container.innerHTML = "<p>No questions submitted yet.</p>";
+          return;
         }
-      });
-    }
 
-    function sendReply(id) {
-      const replyText = document.getElementById(reply-${id}).value;
-      if (replyText.trim() === "") {
-        alert("Reply cannot be empty.");
-        return;
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const question = data.question || "No question text";
+          const name = data.name || "Anonymous";
+          const email = data.email || "No email";
+          const timestamp = data.timestamp ? new Date(data.timestamp.seconds * 1000).toLocaleString() : "Unknown";
+
+          const card = document.createElement("div");
+          card.className = "question-card";
+          card.innerHTML = `
+            <p><strong>${name}</strong> (${email})</p>
+            <p><em>${timestamp}</em></p>
+            <p>${question}</p>
+            <div class="reply-section">
+              <label>Reply (Text):</label>
+              <textarea rows="3" placeholder="Write your reply..."></textarea>
+              <label>Reply (Audio):</label>
+              <input type="file" accept="audio/*">
+              <label>Reply (Video):</label>
+              <input type="file" accept="video/*">
+              <button onclick="sendReply()">Send Reply</button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      } catch (error) {
+        container.innerHTML = <p style="color:red;">Error loading questions: ${error.message}</p>;
       }
-      db.collection("questions").doc(id).update({
-        reply: replyText,
-        repliedAt: new Date()
-      }).then(() => {
-        alert("Reply saved!");
-      }).catch(err => {
-        alert("Error saving reply: " + err.message);
-      });
     }
 
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      auth.signOut().then(() => {
-        window.location.href = "admin-login.html";
-      });
-    });
+    loadQuestions();
+
+    function sendReply() {
+      alert("Reply feature coming soon!");
+    }
   </script>
 </body>
 </html>
