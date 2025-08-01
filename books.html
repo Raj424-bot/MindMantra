@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MindMantra Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .books-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .book-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .book-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    .book-card h2 {
+      font-size: 20px;
+      margin: 15px 0 10px;
+    }
+    .book-card button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .available {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .available:hover {
+      background-color: #45a049;
+    }
+    .coming-soon {
+      background-color: #aaa;
+      color: white;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📚 MindMantra Library</h1>
+
+  <div class="books-container">
+
+    <!-- Book 1: Available -->
+    <div class="book-card">
+      <img src="30 mindmantra.jpg" alt="30 Mind Mantra">
+      <h2>30 Mind Mantra</h2>
+      <a href="books/30-mind-mantra.pdf" target="_blank">
+        <button class="available">Read Now</button>
+      </a>
+    </div>
+
+    <!-- Book 2: Coming Soon -->
+    <div class="book-card">
+      <img src="mini english speaking guide.jpg" alt="Mini English Speaking Guide">
+      <h2>Mini English Speaking Guide</h2>
+      <button class="coming-soon" disabled>Coming Soon</button>
+    </div>
+
+    <!-- Book 3: Coming Soon -->
+    <div class="book-card">
+      <img src="A mans smile.jpg" alt="A Man's Smile">
+      <h2>A Man's Smile – A Mystery Unsolved</h2>
+      <button class="coming-soon" disabled>Coming Soon</button>
+    </div>
+
+  </div>
+
+</body>
+</html>
